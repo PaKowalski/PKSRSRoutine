@@ -1490,7 +1490,7 @@ namespace PKSRSRoutine
                         {
                             await Coroutines.LatencyWait();
 
-                            await Coroutines.FinishCurrentAction(false);
+                            await Coroutines.FinishCurrentAction();
 
                             await Coroutines.LatencyWait();
 
