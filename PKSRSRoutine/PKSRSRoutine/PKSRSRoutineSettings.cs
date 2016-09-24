@@ -38,7 +38,6 @@ namespace PKSRSRoutine
 
         private int _totemDelayMs;
         
-
         private int _summonRagingSpiritCountPerDelay;
         private int _summonRagingSpiritDelayMs;
 

@@ -17,7 +17,6 @@ using Loki.Common;
 using Loki.Game;
 using Loki.Game.GameData;
 using Loki.Game.Objects;
-using VortexRoutine;
 
 namespace PKSRSRoutine
 {
@@ -411,7 +410,7 @@ namespace PKSRSRoutine
                     return false;
 
                 // Ignore mobs that are too far to care about.
-                if (m.Distance > (_currentLeashRange != -1 ? _currentLeashRange : VortexRoutineSettings.Instance.CombatRange))
+                if (m.Distance > (_currentLeashRange != -1 ? _currentLeashRange : PKSRSRoutineSettings.Instance.CombatRange))
                     return false;
 
                 // Ignore mobs with special aura/buffs
@@ -457,7 +456,7 @@ namespace PKSRSRoutine
         /// <summary>Initializes this routine.</summary>
         public void Initialize()
         {
-            Log.DebugFormat("[VortexRoutine] Initialize");
+            Log.DebugFormat("[PKSRSRoutine] Initialize");
 
             _combatTargeting.InclusionCalcuation += CombatTargetingOnInclusionCalcuation;
             _combatTargeting.WeightCalculation += CombatTargetingOnWeightCalculation;
@@ -479,7 +478,7 @@ namespace PKSRSRoutine
         {
             get
             {
-                return "VortexRoutine";
+                return "PKSRSRoutine";
             }
         }
 
@@ -546,7 +545,7 @@ namespace PKSRSRoutine
         private bool IsAuraName(string name)
         {
             // This makes sure auras on items don't get used, since they don't have skill gems, and won't have an Aura tag.
-            if (!VortexRoutineSettings.Instance.EnableAurasFromItems)
+            if (!PKSRSRoutineSettings.Instance.EnableAurasFromItems)
             {
                 return false;
             }
@@ -719,7 +718,7 @@ namespace PKSRSRoutine
             {
 
                 using (
-                    var fs = new FileStream(Path.Combine(ThirdPartyLoader.GetInstance("VortexRoutine").ContentPath, "SettingsGui.xaml"),
+                    var fs = new FileStream(Path.Combine(ThirdPartyLoader.GetInstance("PKSRSRoutine").ContentPath, "SettingsGui.xaml"),
                         FileMode.Open))
                 {
                     var root = (UserControl)XamlReader.Load(fs);
@@ -1592,7 +1591,7 @@ namespace PKSRSRoutine
                 }
 
                 // Logic for figuring out if we should use an AoE skill instead.
-                if (myPos.Distance(cachedPosition) < VortexRoutineSettings.Instance.MaxMeleeRange)
+                if (myPos.Distance(cachedPosition) < PKSRSRoutineSettings.Instance.MaxMeleeRange)
                 {
                     melee = true;
                     if (cachedMobsNearForAoe >= 3)
@@ -1611,34 +1610,34 @@ namespace PKSRSRoutine
                 {
                     if (melee)
                     {
-                        slot = EnsurceCast(VortexRoutineSettings.Instance.AoeMeleeSlot);
+                        slot = EnsurceCast(PKSRSRoutineSettings.Instance.AoeMeleeSlot);
                         if (slot == -1)
                         {
-                            slot = EnsurceCast(VortexRoutineSettings.Instance.SingleTargetMeleeSlot);
+                            slot = EnsurceCast(PKSRSRoutineSettings.Instance.SingleTargetMeleeSlot);
                             if (slot == -1)
                             {
                                 melee = false;
-                                slot = EnsurceCast(VortexRoutineSettings.Instance.AoeRangedSlot);
+                                slot = EnsurceCast(PKSRSRoutineSettings.Instance.AoeRangedSlot);
                                 if (slot == -1)
                                 {
-                                    slot = EnsurceCast(VortexRoutineSettings.Instance.SingleTargetRangedSlot);
+                                    slot = EnsurceCast(PKSRSRoutineSettings.Instance.SingleTargetRangedSlot);
                                 }
                             }
                         }
                     }
                     else
                     {
-                        slot = EnsurceCast(VortexRoutineSettings.Instance.AoeRangedSlot);
+                        slot = EnsurceCast(PKSRSRoutineSettings.Instance.AoeRangedSlot);
                         if (slot == -1)
                         {
-                            slot = EnsurceCast(VortexRoutineSettings.Instance.SingleTargetRangedSlot);
+                            slot = EnsurceCast(PKSRSRoutineSettings.Instance.SingleTargetRangedSlot);
                             if (slot == -1)
                             {
                                 melee = true;
-                                slot = EnsurceCast(VortexRoutineSettings.Instance.AoeMeleeSlot);
+                                slot = EnsurceCast(PKSRSRoutineSettings.Instance.AoeMeleeSlot);
                                 if (slot == -1)
                                 {
-                                    slot = EnsurceCast(VortexRoutineSettings.Instance.SingleTargetMeleeSlot);
+                                    slot = EnsurceCast(PKSRSRoutineSettings.Instance.SingleTargetMeleeSlot);
                                 }
                             }
                         }
@@ -1648,46 +1647,46 @@ namespace PKSRSRoutine
                 {
                     if (melee)
                     {
-                        slot = EnsurceCast(VortexRoutineSettings.Instance.SingleTargetMeleeSlot);
+                        slot = EnsurceCast(PKSRSRoutineSettings.Instance.SingleTargetMeleeSlot);
                         if (slot == -1)
                         {
-                            slot = EnsurceCast(VortexRoutineSettings.Instance.AoeMeleeSlot);
+                            slot = EnsurceCast(PKSRSRoutineSettings.Instance.AoeMeleeSlot);
                             if (slot == -1)
                             {
                                 melee = false;
-                                slot = EnsurceCast(VortexRoutineSettings.Instance.SingleTargetRangedSlot);
+                                slot = EnsurceCast(PKSRSRoutineSettings.Instance.SingleTargetRangedSlot);
                                 if (slot == -1)
                                 {
-                                    slot = EnsurceCast(VortexRoutineSettings.Instance.AoeRangedSlot);
+                                    slot = EnsurceCast(PKSRSRoutineSettings.Instance.AoeRangedSlot);
                                 }
                             }
                         }
                     }
                     else
                     {
-                        slot = EnsurceCast(VortexRoutineSettings.Instance.SingleTargetRangedSlot);
+                        slot = EnsurceCast(PKSRSRoutineSettings.Instance.SingleTargetRangedSlot);
                         if (slot == -1)
                         {
-                            slot = EnsurceCast(VortexRoutineSettings.Instance.AoeRangedSlot);
+                            slot = EnsurceCast(PKSRSRoutineSettings.Instance.AoeRangedSlot);
                             if (slot == -1)
                             {
                                 melee = true;
-                                slot = EnsurceCast(VortexRoutineSettings.Instance.SingleTargetMeleeSlot);
+                                slot = EnsurceCast(PKSRSRoutineSettings.Instance.SingleTargetMeleeSlot);
                                 if (slot == -1)
                                 {
-                                    slot = EnsurceCast(VortexRoutineSettings.Instance.AoeMeleeSlot);
+                                    slot = EnsurceCast(PKSRSRoutineSettings.Instance.AoeMeleeSlot);
                                 }
                             }
                         }
                     }
                 }
 
-                if (VortexRoutineSettings.Instance.AlwaysAttackInPlace)
+                if (PKSRSRoutineSettings.Instance.AlwaysAttackInPlace)
                     aip = true;
 
                 if (slot == -1)
                 {
-                    slot = VortexRoutineSettings.Instance.FallbackSlot;
+                    slot = PKSRSRoutineSettings.Instance.FallbackSlot;
                     melee = true;
                 }
 
@@ -1700,10 +1699,10 @@ namespace PKSRSRoutine
                 if (melee || cachedProxShield)
                 {
                     var dist = LokiPoe.MyPosition.Distance(cachedPosition);
-                    if (dist > VortexRoutineSettings.Instance.MaxMeleeRange)
+                    if (dist > PKSRSRoutineSettings.Instance.MaxMeleeRange)
                     {
                         Log.InfoFormat("[Logic] Now moving towards {0} because [dist ({1}) > MaxMeleeRange ({2})]",
-                            cachedPosition, dist, VortexRoutineSettings.Instance.MaxMeleeRange);
+                            cachedPosition, dist, PKSRSRoutineSettings.Instance.MaxMeleeRange);
 
                         if (!PlayerMover.MoveTowards(cachedPosition))
                         {
@@ -1716,10 +1715,10 @@ namespace PKSRSRoutine
                 else
                 {
                     var dist = LokiPoe.MyPosition.Distance(cachedPosition);
-                    if (dist > VortexRoutineSettings.Instance.MaxRangeRange)
+                    if (dist > PKSRSRoutineSettings.Instance.MaxRangeRange)
                     {
                         Log.InfoFormat("[Logic] Now moving towards {0} because [dist ({1}) > MaxRangeRange ({2})]",
-                            cachedPosition, dist, VortexRoutineSettings.Instance.MaxRangeRange);
+                            cachedPosition, dist, PKSRSRoutineSettings.Instance.MaxRangeRange);
 
                         if (!PlayerMover.MoveTowards(cachedPosition))
                         {
@@ -1811,7 +1810,7 @@ namespace PKSRSRoutine
                     .Where(
                         m =>
                             m.Distance < 30 && m.IsActiveDead && m.Rarity != Rarity.Unique && m.CorpseUsable &&
-                            ExilePather.PathDistance(myPos, m.Position, false, !VortexRoutineSettings.Instance.LeaveFrame) < 30)
+                            ExilePather.PathDistance(myPos, m.Position, false, !PKSRSRoutineSettings.Instance.LeaveFrame) < 30)
                     .OrderBy(m => m.Distance).FirstOrDefault();
             }
         }
@@ -1836,7 +1835,7 @@ namespace PKSRSRoutine
         private async Task<bool> HandleShrines()
         {
             // If the user wants to avoid shrine logic due to stuck issues, simply return without doing anything.
-            if (VortexRoutineSettings.Instance.SkipShrines)
+            if (PKSRSRoutineSettings.Instance.SkipShrines)
                 return false;
 
             // TODO: Shrines need speical CR logic, because it's now the CRs responsibility for handling all combaat situations,
@@ -1884,7 +1883,7 @@ namespace PKSRSRoutine
                 var pos = ExilePather.FastWalkablePositionFor(shrine);
 
                 // We need to filter out based on pathfinding, since otherwise, a large gap will lockup the bot.
-                var pathDistance = ExilePather.PathDistance(myPos, pos, false, !VortexRoutineSettings.Instance.LeaveFrame);
+                var pathDistance = ExilePather.PathDistance(myPos, pos, false, !PKSRSRoutineSettings.Instance.LeaveFrame);
 
                 Log.DebugFormat("[HandleShrines] Now moving towards the Shrine {0} [pathPos: {1} pathDis: {2}].", shrine.Id, pos,
                     pathDistance);
@@ -1896,7 +1895,7 @@ namespace PKSRSRoutine
                     return false;
                 }
 
-                //var canSee = ExilePather.CanObjectSee(LokiPoe.Me, pos, !VortexRoutineSettings.Instance.LeaveFrame);
+                //var canSee = ExilePather.CanObjectSee(LokiPoe.Me, pos, !PKSRSRoutineSettings.Instance.LeaveFrame);
 
                 // We're in distance when we're sure we're close to the position, but also that the path we need to take to the position
                 // isn't too much further. This prevents problems with things on higher ground when we are on lower, and vice-versa.
