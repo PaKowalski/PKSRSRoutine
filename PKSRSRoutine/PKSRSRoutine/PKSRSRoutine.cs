@@ -195,8 +195,6 @@ namespace PKSRSRoutine
         private readonly List<int> _curseSlots = new List<int>();
         private int _auraSlot = -1;
         private int _totemSlot = -1;
-        private int _trapSlot = -1;
-        private int _mineSlot = -1;
         private int _summonRagingSpiritSlot = -1;
         private int _totalCursesAllowed;
 
@@ -204,9 +202,7 @@ namespace PKSRSRoutine
         private int _castingSlot;
 
         private int _currentLeashRange = -1;
-
-
-        private readonly Stopwatch _trapStopwatch = Stopwatch.StartNew();
+        
         private readonly Stopwatch _totemStopwatch = Stopwatch.StartNew();
         private readonly Stopwatch _vaalStopwatch = Stopwatch.StartNew();
         
@@ -578,7 +574,6 @@ namespace PKSRSRoutine
                 _enduringCrySlot = -1;
                 _auraSlot = -1;
                 _totemSlot = -1;
-                _trapSlot = -1;
                 _bloodRageSlot = -1;
                 _rfSlot = -1;
                 _summonRagingSpiritSlot = -1;
@@ -611,16 +606,6 @@ namespace PKSRSRoutine
                     if (skill.IsTotem && _totemSlot == -1)
                     {
                         _totemSlot = skill.Slot;
-                    }
-
-                    if (skill.IsTrap && _trapSlot == -1)
-                    {
-                        _trapSlot = skill.Slot;
-                    }
-
-                    if (skill.IsMine && _mineSlot == -1)
-                    {
-                        _mineSlot = skill.Slot;
                     }
                 }
                 
@@ -910,14 +895,6 @@ namespace PKSRSRoutine
                     {
                         Log.DebugFormat(
                             "[SettingsControl] SetupTextBoxBinding failed for 'TotemDelayMsTextBox'.");
-                        throw new Exception("The SettingsControl could not be created.");
-                    }
-
-                    if (!Wpf.SetupTextBoxBinding(root, "TrapDelayMsTextBox", "TrapDelayMs",
-                        BindingMode.TwoWay, PKSRSRoutineSettings.Instance))
-                    {
-                        Log.DebugFormat(
-                            "[SettingsControl] SetupTextBoxBinding failed for 'TrapDelayMsTextBox'.");
                         throw new Exception("The SettingsControl could not be created.");
                     }
 
@@ -1410,28 +1387,7 @@ namespace PKSRSRoutine
                 }
 
                 // Handle trap logic.
-                if (_trapSlot != -1 &&
-                    _trapStopwatch.ElapsedMilliseconds > PKSRSRoutineSettings.Instance.TrapDelayMs)
-                {
-                    var skill = LokiPoe.InGameState.SkillBarHud.Slot(_trapSlot);
-                    if (skill.CanUse())
-                    {
-                        await DisableAlwaysHiglight();
-
-                        await Coroutines.FinishCurrentAction();
-
-                        var err1 = LokiPoe.InGameState.SkillBarHud.UseAt(_trapSlot, true,
-                            myPos.GetPointAtDistanceAfterThis(cachedPosition,
-                                cachedDistance / 2));
-
-                        _trapStopwatch.Restart();
-
-                        if (err1 == LokiPoe.InGameState.UseResult.None)
-                            return true;
-
-                        Log.ErrorFormat("[Logic] UseAt returned {0} for {1}.", err1, skill.Name);
-                    }
-                }
+                
 
                 // Handle curse logic - curse magic+ and packs of 4+, but only cast within MaxRangeRange.
                 var checkCurses = myPos.Distance(cachedPosition) < PKSRSRoutineSettings.Instance.MaxRangeRange &&
