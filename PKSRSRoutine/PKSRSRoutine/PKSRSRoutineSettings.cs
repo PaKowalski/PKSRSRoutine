@@ -37,9 +37,7 @@ namespace PKSRSRoutine
         private bool _alwaysAttackInPlace;
 
         private int _totemDelayMs;
-
-        private int _summonSkeletonCountPerDelay;
-        private int _summonSkeletonDelayMs;
+        
 
         private int _summonRagingSpiritCountPerDelay;
         private int _summonRagingSpiritDelayMs;
@@ -407,5 +405,7 @@ namespace PKSRSRoutine
                 });
             }
         }
+
+        public long TrapDelayMs { get; internal set; }
     }
 }

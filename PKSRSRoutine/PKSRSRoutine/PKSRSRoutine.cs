@@ -190,11 +190,7 @@ namespace PKSRSRoutine
         private int _summonLightningGolemSlot = -1;
         private int _raiseZombieSlot = -1;
         private int _raiseSpectreSlot = -1;
-        private int _animateWeaponSlot = -1;
-        private int _animateGuardianSlot = -1;
-        private int _flameblastSlot = -1;
         private int _enduringCrySlot = -1;
-        private int _moltenShellSlot = -1;
         private int _bloodRageSlot = -1;
         private int _rfSlot = -1;
         private readonly List<int> _curseSlots = new List<int>();
@@ -202,13 +198,7 @@ namespace PKSRSRoutine
         private int _totemSlot = -1;
         private int _trapSlot = -1;
         private int _mineSlot = -1;
-        private int _summonSkeletonsSlot = -1;
         private int _summonRagingSpiritSlot = -1;
-        private int _coldSnapSlot = -1;
-        private int _contagionSlot = -1;
-        private int _witherSlot = -1;
-        private int _bladeVortexSlot = -1;
-        private int _bladeVortexCount = 0;
         private int _totalCursesAllowed;
 
         private bool _isCasting;
@@ -219,21 +209,14 @@ namespace PKSRSRoutine
 
         private readonly Stopwatch _trapStopwatch = Stopwatch.StartNew();
         private readonly Stopwatch _totemStopwatch = Stopwatch.StartNew();
-        private readonly Stopwatch _mineStopwatch = Stopwatch.StartNew();
-        private readonly Stopwatch _moltenShellStopwatch = Stopwatch.StartNew();
-        private readonly List<int> _ignoreAnimatedItems = new List<int>();
         private readonly Stopwatch _vaalStopwatch = Stopwatch.StartNew();
-
-        private int _summonSkeletonCount;
-        private readonly Stopwatch _summonSkeletonsStopwatch = Stopwatch.StartNew();
+        
 
         private readonly Stopwatch _summonGolemStopwatch = Stopwatch.StartNew();
 
         private int _summonRagingSpiritCount;
         private readonly Stopwatch _summonRagingSpiritStopwatch = Stopwatch.StartNew();
-
-        private bool _castingFlameblast;
-        private int _lastFlameblastCharges;
+        
         private bool _needsUpdate;
 
         private readonly Targeting _combatTargeting = new Targeting();
@@ -593,26 +576,14 @@ namespace PKSRSRoutine
                 _summonLightningGolemSlot = -1;
                 _raiseZombieSlot = -1;
                 _raiseSpectreSlot = -1;
-                _animateWeaponSlot = -1;
-                _animateGuardianSlot = -1;
-                _flameblastSlot = -1;
                 _enduringCrySlot = -1;
-                _moltenShellSlot = -1;
                 _auraSlot = -1;
                 _totemSlot = -1;
                 _trapSlot = -1;
-                _coldSnapSlot = -1;
-                _contagionSlot = -1;
-                _witherSlot = -1;
                 _bloodRageSlot = -1;
                 _rfSlot = -1;
-                _summonSkeletonsSlot = -1;
                 _summonRagingSpiritSlot = -1;
-                _summonSkeletonCount = 0;
                 _summonRagingSpiritCount = 0;
-                _mineSlot = -1;
-                _bladeVortexSlot = -1;
-                _bladeVortexCount = 0;
                 _curseSlots.Clear();
                 _totalCursesAllowed = LokiPoe.Me.TotalCursesAllowed;
 
@@ -653,31 +624,7 @@ namespace PKSRSRoutine
                         _mineSlot = skill.Slot;
                     }
                 }
-
-                var cs = LokiPoe.InGameState.SkillBarHud.Skills.FirstOrDefault(s => s.Name == "Cold Snap");
-                if (IsCastableHelper(cs))
-                {
-                    _coldSnapSlot = cs.Slot;
-                }
-
-                var con = LokiPoe.InGameState.SkillBarHud.Skills.FirstOrDefault(s => s.Name == "Contagion");
-                if (IsCastableHelper(con))
-                {
-                    _contagionSlot = con.Slot;
-                }
-
-                var wither = LokiPoe.InGameState.SkillBarHud.Skills.FirstOrDefault(s => s.Name == "Wither");
-                if (IsCastableHelper(wither))
-                {
-                    _witherSlot = wither.Slot;
-                }
-
-                var ss = LokiPoe.InGameState.SkillBarHud.Skills.FirstOrDefault(s => s.Name == "Summon Skeletons");
-                if (IsCastableHelper(ss))
-                {
-                    _summonSkeletonsSlot = ss.Slot;
-                }
-
+                
                 var srs = LokiPoe.InGameState.SkillBarHud.Skills.FirstOrDefault(s => s.Name == "Summon Raging Spirit");
                 if (IsCastableHelper(srs))
                 {
@@ -695,12 +642,7 @@ namespace PKSRSRoutine
                 {
                     _bloodRageSlot = br.Slot;
                 }
-
-                var mc = LokiPoe.InGameState.SkillBarHud.Skills.FirstOrDefault(s => s.Name == "Molten Shell");
-                if (IsCastableHelper(mc))
-                {
-                    _moltenShellSlot = mc.Slot;
-                }
+                
 
                 var ec = LokiPoe.InGameState.SkillBarHud.Skills.FirstOrDefault(s => s.Name == "Enduring Cry");
                 if (IsCastableHelper(ec))
@@ -748,36 +690,13 @@ namespace PKSRSRoutine
                 {
                     _raiseZombieSlot = rz.Slot;
                 }
-
-                var bv = LokiPoe.InGameState.SkillBarHud.Skills.FirstOrDefault(s => s.Name == "Blade Vortex");
-                if (IsCastableHelper(bv))
-                {
-                    _bladeVortexSlot = bv.Slot;
-                }
-
+                
                 var rs = LokiPoe.InGameState.SkillBarHud.Skills.FirstOrDefault(s => s.Name == "Raise Spectre");
                 if (IsCastableHelper(rs))
                 {
                     _raiseSpectreSlot = rs.Slot;
                 }
-
-                var fb = LokiPoe.InGameState.SkillBarHud.Skills.FirstOrDefault(s => s.Name == "Flameblast");
-                if (IsCastableHelper(fb))
-                {
-                    _flameblastSlot = fb.Slot;
-                }
-
-                var ag = LokiPoe.InGameState.SkillBarHud.Skills.FirstOrDefault(s => s.Name == "Animate Guardian");
-                if (IsCastableHelper(ag))
-                {
-                    _animateGuardianSlot = ag.Slot;
-                }
-
-                var aw = LokiPoe.InGameState.SkillBarHud.Skills.FirstOrDefault(s => s.Name == "Animate Weapon");
-                if (IsCastableHelper(aw))
-                {
-                    _animateWeaponSlot = aw.Slot;
-                }
+                
 
                 _needsUpdate = false;
             }
@@ -1162,9 +1081,7 @@ namespace PKSRSRoutine
                 var newSeed = (uint)param[1];
                 var oldArea = (DatWorldAreaWrapper)param[2];
                 var newArea = (DatWorldAreaWrapper)param[3];
-
-                _ignoreAnimatedItems.Clear();
-
+                
                 _shrineTries.Clear();
 
                 return true;
@@ -1345,38 +1262,7 @@ namespace PKSRSRoutine
                     }
                 }
 
-                // For Molten Shell, we want to limit cast time, since mobs that break the shield often would cause the CR to cast it over and over.
-                if (_moltenShellSlot != -1 &&
-                    _moltenShellStopwatch.ElapsedMilliseconds >= VortexRoutineSettings.Instance.MoltenShellDelayMs)
-                {
-                    // See if we can use the skill.
-                    var skill = LokiPoe.InGameState.SkillBarHud.Slot(_moltenShellSlot);
-                    if (!LokiPoe.Me.HasMoltenShellBuff && skill.CanUse())
-                    {
-                        if (NumberOfMobsNear(LokiPoe.Me, VortexRoutineSettings.Instance.CombatRange) > 0)
-                        {
-                            await Coroutines.FinishCurrentAction();
-
-                            var err1 = LokiPoe.InGameState.SkillBarHud.Use(_moltenShellSlot, true);
-
-                            _moltenShellStopwatch.Restart();
-
-                            if (err1 == LokiPoe.InGameState.UseResult.None)
-                            {
-                                await Coroutines.LatencyWait();
-
-                                await Coroutines.FinishCurrentAction(false);
-
-                                await Coroutines.LatencyWait();
-
-                                return true;
-                            }
-
-                            Log.ErrorFormat("[Logic] Use returned {0} for {1}.", err1, skill.Name);
-                        }
-                    }
-                }
-
+                
                 // Handle aura logic.
                 if (_auraSlot != -1)
                 {
@@ -1387,7 +1273,7 @@ namespace PKSRSRoutine
 
                         if (skill.IsAurifiedCurse)
                         {
-                            if (!skill.AmICursingWithThis && skill.CanUse(VortexRoutineSettings.Instance.DebugAuras, true))
+                            if (!skill.AmICursingWithThis && skill.CanUse(PKSRSRoutineSettings.Instance.DebugAuras, true))
                             {
                                 if (await TryUseAura(skill))
                                 {
@@ -1397,7 +1283,7 @@ namespace PKSRSRoutine
                         }
                         else if (skill.IsConsideredAura)
                         {
-                            if (!skill.AmIUsingConsideredAuraWithThis && skill.CanUse(VortexRoutineSettings.Instance.DebugAuras, true))
+                            if (!skill.AmIUsingConsideredAuraWithThis && skill.CanUse(PKSRSRoutineSettings.Instance.DebugAuras, true))
                             {
                                 if (await TryUseAura(skill))
                                 {
@@ -1407,7 +1293,7 @@ namespace PKSRSRoutine
                         }
                         else if ((skill.SkillTags.Contains("aura") && !skill.SkillTags.Contains("vaal")) || IsAuraName(skill.Name))
                         {
-                            if (!LokiPoe.Me.HasAura(skill.Name) && skill.CanUse(VortexRoutineSettings.Instance.DebugAuras, true))
+                            if (!LokiPoe.Me.HasAura(skill.Name) && skill.CanUse(PKSRSRoutineSettings.Instance.DebugAuras, true))
                             {
                                 if (await TryUseAura(skill))
                                 {
@@ -1417,17 +1303,7 @@ namespace PKSRSRoutine
                         }
                     }
                 }
-
-                // Check for a surround to use flameblast, just example logic.
-                if (_flameblastSlot != -1)
-                {
-                    if (NumberOfMobsNear(LokiPoe.Me, 15) >= 4)
-                    {
-                        _castingFlameblast = true;
-                        _lastFlameblastCharges = 0;
-                        return true;
-                    }
-                }
+                
 
                 // TODO: _currentLeashRange of -1 means we need to use a cached location system to prevent back and forth issues of mobs despawning.
 
@@ -1457,10 +1333,8 @@ namespace PKSRSRoutine
                 var cachedHasCurseFrom = new Dictionary<string, bool>();
                 var cachedNumberOfMobsNear = NumberOfMobsNear(bestTarget, 20);
                 var cachedProxShield = bestTarget.HasProximityShield;
-                var cachedContagion = bestTarget.HasContagion;
-                var cachedWither = bestTarget.HasWither;
                 var cachedMobsNearForAoe = NumberOfMobsNear(LokiPoe.Me,
-                    VortexRoutineSettings.Instance.MaxMeleeRange);
+                    PKSRSRoutineSettings.Instance.MaxMeleeRange);
                 var cachedMobsNearForCurse = NumberOfMobsNear(bestTarget, 20);
 
                 foreach (var curseSlot in _curseSlots)
@@ -1474,10 +1348,10 @@ namespace PKSRSRoutine
                     return true;
                 }
 
-                var canSee = ExilePather.CanObjectSee(LokiPoe.Me, bestTarget, !VortexRoutineSettings.Instance.LeaveFrame);
-                var pathDistance = ExilePather.PathDistance(myPos, cachedPosition, false, !VortexRoutineSettings.Instance.LeaveFrame);
+                var canSee = ExilePather.CanObjectSee(LokiPoe.Me, bestTarget, !PKSRSRoutineSettings.Instance.LeaveFrame);
+                var pathDistance = ExilePather.PathDistance(myPos, cachedPosition, false, !PKSRSRoutineSettings.Instance.LeaveFrame);
                 var blockedByDoor = ClosedDoorBetween(LokiPoe.Me, bestTarget, 10, 10,
-                    !VortexRoutineSettings.Instance.LeaveFrame);
+                    !PKSRSRoutineSettings.Instance.LeaveFrame);
 
                 if (pathDistance.CompareTo(float.MaxValue) == 0)
                 {
@@ -1488,7 +1362,7 @@ namespace PKSRSRoutine
                 }
 
                 // Prevent combat loops from happening by preventing combat outside CombatRange.
-                if (pathDistance > VortexRoutineSettings.Instance.CombatRange)
+                if (pathDistance > PKSRSRoutineSettings.Instance.CombatRange)
                 {
                     await EnableAlwaysHiglight();
 
@@ -1512,7 +1386,7 @@ namespace PKSRSRoutine
 
                 // Handle totem logic.
                 if (_totemSlot != -1 &&
-                    _totemStopwatch.ElapsedMilliseconds > VortexRoutineSettings.Instance.TotemDelayMs)
+                    _totemStopwatch.ElapsedMilliseconds > PKSRSRoutineSettings.Instance.TotemDelayMs)
                 {
                     var skill = LokiPoe.InGameState.SkillBarHud.Slot(_totemSlot);
                     if (skill.CanUse() &&
@@ -1538,7 +1412,7 @@ namespace PKSRSRoutine
 
                 // Handle trap logic.
                 if (_trapSlot != -1 &&
-                    _trapStopwatch.ElapsedMilliseconds > VortexRoutineSettings.Instance.TrapDelayMs)
+                    _trapStopwatch.ElapsedMilliseconds > PKSRSRoutineSettings.Instance.TrapDelayMs)
                 {
                     var skill = LokiPoe.InGameState.SkillBarHud.Slot(_trapSlot);
                     if (skill.CanUse())
@@ -1561,7 +1435,7 @@ namespace PKSRSRoutine
                 }
 
                 // Handle curse logic - curse magic+ and packs of 4+, but only cast within MaxRangeRange.
-                var checkCurses = myPos.Distance(cachedPosition) < VortexRoutineSettings.Instance.MaxRangeRange &&
+                var checkCurses = myPos.Distance(cachedPosition) < PKSRSRoutineSettings.Instance.MaxRangeRange &&
                                 (cachedRarity >= Rarity.Magic || cachedMobsNearForCurse >= 3);
                 if (checkCurses)
                 {
@@ -1591,7 +1465,7 @@ namespace PKSRSRoutine
                 {
                     // See if we can use the skill.
                     var skill = LokiPoe.InGameState.SkillBarHud.Slot(_bloodRageSlot);
-                    if (skill.CanUse() && !LokiPoe.Me.HasBloodRageBuff && cachedDistance < VortexRoutineSettings.Instance.CombatRange)
+                    if (skill.CanUse() && !LokiPoe.Me.HasBloodRageBuff && cachedDistance < PKSRSRoutineSettings.Instance.CombatRange)
                     {
                         await Coroutines.FinishCurrentAction();
 
@@ -1636,7 +1510,7 @@ namespace PKSRSRoutine
 
                 if (_summonRagingSpiritSlot != -1 &&
                     _summonRagingSpiritStopwatch.ElapsedMilliseconds >
-                    VortexRoutineSettings.Instance.SummonRagingSpiritDelayMs)
+                    PKSRSRoutineSettings.Instance.SummonRagingSpiritDelayMs)
                 {
                     var skill = LokiPoe.InGameState.SkillBarHud.Slot(_summonRagingSpiritSlot);
                     var max = skill.GetStat(StatTypeGGG.NumberOfRagingSpiritsAllowed);
@@ -1650,7 +1524,7 @@ namespace PKSRSRoutine
                         var err1 = LokiPoe.InGameState.SkillBarHud.BeginUseAt(_summonRagingSpiritSlot, false, targetPosition);
 
                         if (_summonRagingSpiritCount >=
-                            VortexRoutineSettings.Instance.SummonRagingSpiritCountPerDelay)
+                            PKSRSRoutineSettings.Instance.SummonRagingSpiritCountPerDelay)
                         {
                             _summonRagingSpiritCount = 0;
                             _summonRagingSpiritStopwatch.Restart();
@@ -1670,191 +1544,10 @@ namespace PKSRSRoutine
                         Log.ErrorFormat("[Logic] Use returned {0} for {1}.", err1, skill.Name);
                     }
                 }
-
-                if (_summonSkeletonsSlot != -1 &&
-                    _summonSkeletonsStopwatch.ElapsedMilliseconds >
-                    VortexRoutineSettings.Instance.SummonSkeletonDelayMs)
-                {
-                    var skill = LokiPoe.InGameState.SkillBarHud.Slot(_summonSkeletonsSlot);
-                    var max = skill.GetStat(StatTypeGGG.NumberOfSkeletonsAllowed);
-                    if (skill.NumberDeployed < max && skill.CanUse())
-                    {
-                        ++_summonSkeletonCount;
-
-                        await DisableAlwaysHiglight();
-
-                        await Coroutines.FinishCurrentAction();
-
-                        var err1 = LokiPoe.InGameState.SkillBarHud.UseAt(_summonSkeletonsSlot, true,
-                            myPos.GetPointAtDistanceAfterThis(cachedPosition,
-                                cachedDistance / 2));
-
-                        if (_summonSkeletonCount >= VortexRoutineSettings.Instance.SummonSkeletonCountPerDelay)
-                        {
-                            _summonSkeletonCount = 0;
-                            _summonSkeletonsStopwatch.Restart();
-                        }
-
-                        if (err1 == LokiPoe.InGameState.UseResult.None)
-                        {
-                            await Coroutines.FinishCurrentAction(false);
-
-                            return true;
-                        }
-
-                        Log.ErrorFormat("[Logic] UseAt returned {0} for {1}.", err1, skill.Name);
-                    }
-                }
-
-                if (_mineSlot != -1 && _mineStopwatch.ElapsedMilliseconds >
-                    VortexRoutineSettings.Instance.MineDelayMs &&
-                    myPos.Distance(cachedPosition) < VortexRoutineSettings.Instance.MaxMeleeRange)
-                {
-                    var skill = LokiPoe.InGameState.SkillBarHud.Slot(_mineSlot);
-                    var max = skill.GetStat(StatTypeGGG.SkillDisplayNumberOfRemoteMinesAllowed);
-                    var insta = skill.GetStat(StatTypeGGG.MineDetonationIsInstant) == 1;
-                    if (skill.NumberDeployed < max && skill.CanUse())
-                    {
-                        await DisableAlwaysHiglight();
-
-                        await Coroutines.FinishCurrentAction();
-
-                        var err1 = LokiPoe.InGameState.SkillBarHud.Use(_mineSlot, true);
-
-                        if (err1 == LokiPoe.InGameState.UseResult.None)
-                        {
-                            await Coroutines.LatencyWait();
-
-                            await Coroutines.FinishCurrentAction(false);
-
-                            if (!insta)
-                            {
-                                await Coroutines.LatencyWait();
-                                await Coroutine.Sleep(500);
-
-                                LokiPoe.Input.SimulateKeyEvent(LokiPoe.Input.Binding.detonate_mines, true, false, false);
-                            }
-
-                            _mineStopwatch.Restart();
-
-                            return true;
-                        }
-
-                        _mineStopwatch.Restart();
-
-                        Log.ErrorFormat("[Logic] UseAt returned {0} for {1}.", err1, skill.Name);
-                    }
-                }
-
-                // Handle Wither logic.
-                if (_witherSlot != -1)
-                {
-                    var skill = LokiPoe.InGameState.SkillBarHud.Slot(_witherSlot);
-                    if (skill.CanUse(false, false, false) && !cachedWither)
-                    {
-                        await DisableAlwaysHiglight();
-
-                        await Coroutines.FinishCurrentAction();
-
-                        var err1 = LokiPoe.InGameState.SkillBarHud.UseAt(_witherSlot, true, cachedPosition);
-
-                        if (err1 == LokiPoe.InGameState.UseResult.None)
-                        {
-                            await Coroutines.LatencyWait();
-
-                            await Coroutines.FinishCurrentAction(false);
-
-                            await Coroutines.LatencyWait();
-
-                            return true;
-                        }
-
-                        Log.ErrorFormat("[Logic] UseAt returned {0} for {1}.", err1, skill.Name);
-                    }
-                }
-
-                // Handle contagion logic.
-                if (_contagionSlot != -1)
-                {
-                    var skill = LokiPoe.InGameState.SkillBarHud.Slot(_contagionSlot);
-                    if (skill.CanUse(false, false, false) && !cachedContagion)
-                    {
-                        await DisableAlwaysHiglight();
-
-                        await Coroutines.FinishCurrentAction();
-
-                        var err1 = LokiPoe.InGameState.SkillBarHud.UseAt(_contagionSlot, true, cachedPosition);
-
-                        if (err1 == LokiPoe.InGameState.UseResult.None)
-                        {
-                            await Coroutines.LatencyWait();
-
-                            await Coroutines.FinishCurrentAction(false);
-
-                            await Coroutines.LatencyWait();
-
-                            return true;
-                        }
-
-                        Log.ErrorFormat("[Logic] UseAt returned {0} for {1}.", err1, skill.Name);
-                    }
-                }
-
-                //Handle Blade Vortex logic
-                if (_bladeVortexSlot != -1)
-                {
-                    var skill = LokiPoe.InGameState.SkillBarHud.Slot(_bladeVortexSlot);
-                    if (skill.CanUse())
-                    {
-                        _bladeVortexCount = LokiPoe.Me.BladeVortexCharges;
-
-                        if (_bladeVortexCount <= VortexRoutineSettings.Instance.BladeVortexCount)
-                        {
-                            LokiPoe.ProcessHookManager.ClearAllKeyStates();
-                            var bverr = LokiPoe.InGameState.SkillBarHud.BeginUse(_bladeVortexSlot, true);
-
-                            _bladeVortexCount = LokiPoe.Me.BladeVortexCharges;
-
-
-                            Log.ErrorFormat("[Logic] UseAt returned {0} for {1}.", bverr, skill.Name);
-                            if (bverr == LokiPoe.InGameState.UseResult.None)
-                            {
-                                return true;
-                            }
-                        }
-
-                    }
-                }
-
-                // Handle cold snap logic. Only use when power charges won't be consumed.
-                if (_coldSnapSlot != -1)
-                {
-                    var skill = LokiPoe.InGameState.SkillBarHud.Slot(_coldSnapSlot);
-                    if (skill.CanUse(false, false, false))
-                    {
-                        await DisableAlwaysHiglight();
-
-                        await Coroutines.FinishCurrentAction();
-
-                        var err1 = LokiPoe.InGameState.SkillBarHud.UseAt(_coldSnapSlot, true, cachedPosition);
-
-                        if (err1 == LokiPoe.InGameState.UseResult.None)
-                        {
-                            await Coroutines.LatencyWait();
-
-                            await Coroutines.FinishCurrentAction(false);
-
-                            await Coroutines.LatencyWait();
-
-                            return true;
-                        }
-
-                        Log.ErrorFormat("[Logic] UseAt returned {0} for {1}.", err1, skill.Name);
-                    }
-                }
+                
 
                 // Auto-cast any vaal skill at the best target as soon as it's usable.
-                if (VortexRoutineSettings.Instance.AutoCastVaalSkills && _vaalStopwatch.ElapsedMilliseconds > 1000)
+                if (PKSRSRoutineSettings.Instance.AutoCastVaalSkills && _vaalStopwatch.ElapsedMilliseconds > 1000)
                 {
                     foreach (var skill in LokiPoe.InGameState.SkillBarHud.Skills)
                     {
