@@ -68,6 +68,7 @@
     <Compile Include="PKSRSRoutine.cs" />
     <Compile Include="Ouroboros\Ouroboros.cs" />
     <Compile Include="Ouroboros\OuroborosSettings.cs" />
+    <Compile Include="PKSRSRoutineSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VortexRoutine\vortexroutine.cs" />
     <Compile Include="VortexRoutine\vortexroutinesettings.cs" />
