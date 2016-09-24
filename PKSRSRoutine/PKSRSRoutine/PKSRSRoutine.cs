@@ -220,8 +220,6 @@ namespace PKSRSRoutine
         private readonly Stopwatch _trapStopwatch = Stopwatch.StartNew();
         private readonly Stopwatch _totemStopwatch = Stopwatch.StartNew();
         private readonly Stopwatch _mineStopwatch = Stopwatch.StartNew();
-        private readonly Stopwatch _animateWeaponStopwatch = Stopwatch.StartNew();
-        private readonly Stopwatch _animateGuardianStopwatch = Stopwatch.StartNew();
         private readonly Stopwatch _moltenShellStopwatch = Stopwatch.StartNew();
         private readonly List<int> _ignoreAnimatedItems = new List<int>();
         private readonly Stopwatch _vaalStopwatch = Stopwatch.StartNew();
