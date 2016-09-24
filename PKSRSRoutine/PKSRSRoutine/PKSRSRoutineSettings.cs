@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PKSRSRoutine
 {
-    public class Class1
+    class PKSRSRoutineSettings
     {
     }
 }
