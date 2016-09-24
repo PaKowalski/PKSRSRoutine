@@ -57,6 +57,24 @@ namespace PKSRSRoutine
         private bool _skipShrines;
 
 
+        [DefaultValue("")]
+        public string BlacklistedSkillIds
+        {
+            get
+            {
+                return _blacklistedSkillIds;
+            }
+            set
+            {
+                if (Equals(value, _blacklistedSkillIds))
+                {
+                    return;
+                }
+                _blacklistedSkillIds = value;
+                NotifyPropertyChanged(() => BlacklistedSkillIds);
+            }
+        }
+
         /// <summary>
 		/// Should the CR leave the current frame to do pathfinds and other frame intensive tasks.
 		/// NOTE: This might cause random memory exceptions due to memory no longer being valid in the CR.
