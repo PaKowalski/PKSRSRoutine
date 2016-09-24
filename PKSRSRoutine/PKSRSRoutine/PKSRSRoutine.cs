@@ -1011,7 +1011,7 @@ namespace PKSRSRoutine
             await Coroutines.FinishCurrentAction();
 
             await Coroutines.LatencyWait();
-
+            //Probably The error is happening here
             var err1 = LokiPoe.InGameState.SkillBarHud.Use(skill.Slot, false);
             if (err1 == LokiPoe.InGameState.UseResult.None)
             {
@@ -1463,6 +1463,7 @@ namespace PKSRSRoutine
                     }
                 }
 
+                //Debug this shit
                 if (_summonRagingSpiritSlot != -1 &&
                     _summonRagingSpiritStopwatch.ElapsedMilliseconds >
                     PKSRSRoutineSettings.Instance.SummonRagingSpiritDelayMs)
